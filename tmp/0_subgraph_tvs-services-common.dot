@@ -1,0 +1,76 @@
+// subgraph node: tvs-services-common
+// subgraph edge: tvs-services-common->hv-cms
+// subgraph node: hv-cms
+// subgraph edge: tvs-services-common->hv-cms
+// subgraph edge: tvs-services-common->tvs-alarm-event
+// subgraph node: tvs-alarm-event
+// subgraph edge: tvs-services-common->tvs-camera-service
+// subgraph node: tvs-camera-service
+// subgraph edge: tvs-services-common->tvs-configuration-service
+// subgraph node: tvs-configuration-service
+// subgraph edge: tvs-services-common->tvs-conf-tools
+// subgraph node: tvs-conf-tools
+// subgraph edge: tvs-services-common->tvs-display-service
+// subgraph node: tvs-display-service
+// subgraph edge: tvs-services-common->tvs-multimedia-service
+// subgraph node: tvs-multimedia-service
+// subgraph edge: tvs-services-common->vms-gateway
+// subgraph node: vms-gateway
+digraph gvpr_result {
+	graph [bgcolor=transparent,
+		concentrate=true,
+		fontname=Handlee,
+		forcelabels=true,
+		overlap=false,
+		rankdir=LR
+	];
+	node [fontname=Handlee,
+		shape=component
+	];
+	edge [fontname=Handlee];
+	"hv-cms"	[color=darkgoldenrod3,
+		shape=rarrow,
+		style=filled];
+	"tvs-alarm-event"	[color=aquamarine3,
+		label="tvs-alarm-event\n#1 $1",
+		shape=rarrow,
+		style=filled];
+	"tvs-camera-service"	[color=aquamarine3,
+		label="tvs-camera-service\n#1 $1",
+		shape=rarrow,
+		style=filled];
+	"tvs-configuration-service"	[color=aquamarine3,
+		label="tvs-configuration-service\n#1 $1",
+		shape=rarrow,
+		style=filled];
+	"tvs-conf-tools"	[color=aquamarine3,
+		label="tvs-conf-tools\n#1 $1",
+		shape=rarrow,
+		style=filled];
+	"tvs-display-service"	[color=aquamarine3,
+		label="tvs-display-service\n#1 $1",
+		shape=rarrow,
+		style=filled];
+	"tvs-multimedia-service"	[color=aquamarine3,
+		label="tvs-multimedia-service\n#1 $1",
+		shape=rarrow,
+		style=filled];
+	"tvs-services-common"	[color=aquamarine3,
+		label="tvs-services-common\n#1 #2 $1",
+		style=filled];
+	"tvs-services-common" -> "hv-cms"	[color=red,
+		style=filled];
+	"tvs-services-common" -> "hv-cms"	[color=red,
+		style=filled];
+	"tvs-services-common" -> "tvs-alarm-event";
+	"tvs-services-common" -> "tvs-camera-service";
+	"tvs-services-common" -> "tvs-configuration-service";
+	"tvs-services-common" -> "tvs-conf-tools";
+	"tvs-services-common" -> "tvs-display-service";
+	"tvs-services-common" -> "tvs-multimedia-service";
+	"vms-gateway"	[color=aquamarine3,
+		label="vms-gateway\n#1",
+		shape=rarrow,
+		style=filled];
+	"tvs-services-common" -> "vms-gateway";
+}

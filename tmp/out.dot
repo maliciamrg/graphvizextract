@@ -1,0 +1,88 @@
+digraph gvpr_result_cc_0 {
+	graph [bgcolor=transparent,
+		concentrate=true,
+		fontname=Handlee,
+		forcelabels=true,
+		overlap=false,
+		rankdir=LR
+	];
+	node [fontname=Handlee,
+		shape=component
+	];
+	edge [fontname=Handlee];
+	"tvs-anpr-plugins"	[color=aquamarine3,
+		label="tvs-anpr-plugins\n$1",
+		shape=rarrow,
+		style=filled];
+}
+digraph gvpr_result_cc_0 {
+	graph [bgcolor=transparent,
+		concentrate=true,
+		fontname=Handlee,
+		forcelabels=true,
+		overlap=false,
+		rankdir=LR
+	];
+	node [fontname=Handlee,
+		shape=component
+	];
+	edge [fontname=Handlee];
+	"tvs-ams-plugins"	[color=aquamarine3,
+		label="tvs-ams-plugins\n$1",
+		shape=rarrow,
+		style=filled];
+	"tvs-anpr-plugins"	[color=aquamarine3,
+		label="tvs-anpr-plugins\n$1",
+		shape=rarrow,
+		style=filled];
+	"tvs-camera-monitor"	[color=aquamarine3,
+		label="tvs-camera-monitor\n#1 $1",
+		style=filled];
+	"tvs-camera-service"	[color=aquamarine3,
+		label="tvs-camera-service\n#1 $1",
+		shape=rarrow,
+		style=filled];
+	"tvs-camera-monitor" -> "tvs-camera-service";
+	"tvs-conf-tools"	[color=aquamarine3,
+		label="tvs-conf-tools\n#1 $1",
+		shape=rarrow,
+		style=filled];
+	"tvs-camera-monitor" -> "tvs-conf-tools";
+	"tvs-webapp"	[color=aquamarine3,
+		label="tvs-webapp\n$1",
+		shape=rarrow,
+		style=filled];
+	"tvs-camera-monitor" -> "tvs-webapp";
+	"tvs-webapp" -> "tvs-conf-tools";
+	"tvs-display-service"	[color=aquamarine3,
+		label="tvs-display-service\n#1 $1",
+		shape=rarrow,
+		style=filled];
+	"tvs-multimedia-service"	[color=aquamarine3,
+		label="tvs-multimedia-service\n#1 $1",
+		shape=rarrow,
+		style=filled];
+	"tvs-plugins"	[color=aquamarine3,
+		label="tvs-plugins\n#1 $1",
+		style=filled];
+	"tvs-plugins" -> "tvs-ams-plugins";
+	"tvs-plugins" -> "tvs-anpr-plugins";
+	"tvs-plugins" -> "tvs-camera-service";
+	"tvs-plugins" -> "tvs-webapp";
+	"tvs-plugins" -> "tvs-display-service";
+	"tvs-plugins" -> "tvs-multimedia-service";
+	"tvs-tva-service"	[color=aquamarine3,
+		label="tvs-tva-service\n#1 #2 $1",
+		shape=rarrow,
+		style=filled];
+	"tvs-plugins" -> "tvs-tva-service";
+	"tvs-tva-service" -> "tvs-camera-monitor";
+	"tvs-tva-data-model-jaxb"	[color=aquamarine3,
+		label="tvs-tva-data-model-jaxb\n#1",
+		style=filled];
+	"tvs-tva-data-model-jaxb" -> "tvs-ams-plugins";
+	"tvs-tva-data-model-jaxb" -> "tvs-conf-tools";
+	"tvs-tva-data-model-jaxb" -> "tvs-webapp";
+	"tvs-tva-data-model-jaxb" -> "tvs-plugins";
+	"tvs-tva-data-model-jaxb" -> "tvs-tva-service";
+}

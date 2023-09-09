@@ -1,0 +1,25 @@
+// subgraph node: tvs-webapp
+// subgraph edge: tvs-webapp->tvs-conf-tools
+// subgraph node: tvs-conf-tools
+digraph gvpr_result {
+	graph [bgcolor=transparent,
+		concentrate=true,
+		fontname=Handlee,
+		forcelabels=true,
+		overlap=false,
+		rankdir=LR
+	];
+	node [fontname=Handlee,
+		shape=component
+	];
+	edge [fontname=Handlee];
+	"tvs-conf-tools"	[color=aquamarine3,
+		label="tvs-conf-tools\n#1 $1",
+		shape=rarrow,
+		style=filled];
+	"tvs-webapp"	[color=aquamarine3,
+		label="tvs-webapp\n$1",
+		shape=rarrow,
+		style=filled];
+	"tvs-webapp" -> "tvs-conf-tools";
+}

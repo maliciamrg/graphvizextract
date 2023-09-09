@@ -1,0 +1,15 @@
+// subgraph node: tvs-service-common
+digraph gvpr_result {
+	graph [bgcolor=transparent,
+		concentrate=true,
+		fontname=Handlee,
+		forcelabels=true,
+		overlap=false,
+		rankdir=LR
+	];
+	node [fontname=Handlee,
+		shape=component
+	];
+	edge [fontname=Handlee];
+	"tvs-service-common";
+}

@@ -1,0 +1,710 @@
+
+digraph G {
+  graph [fontname = "Handlee"];
+  node [fontname = "Handlee",shape=component];
+  edge [fontname = "Handlee"];
+  rankdir=LR;
+  overlap=false;
+  bgcolor=transparent;
+  concentrate=true;
+  forcelabels=true;
+
+
+	subgraph cluster_legende {
+		"hv-common" [label="#1 : hv-common"];
+		"hv-connector" [label="#2 : hv-connector"];	
+		"tvs-properties" [label="$1 : tvs-properties"];	
+	}	
+    
+    
+#TVS
+	subgraph hypervisor {
+		color=darkgoldenrod3;
+		label="HyperVisor";
+		node [style=filled,color=darkgoldenrod3]
+		"hv-his";
+		"hv-ams";
+		"hv-cms";
+		"hv-hmi_mwt";
+	}
+
+	subgraph vHvOut {
+		color=purple
+		label="Décommissionnement HV";
+		node [style=filled,color=purple]
+		"tvs-security";
+		"tvs-build";
+		"tvs-dependencies";
+	}
+
+	subgraph cluster_cpp {
+		color=gray48
+		label="Cpp";
+		node [style=filled,color=gray48]
+		"tvs-mosaic";
+		"tvs-proxy";
+		"tvs-visio_tvp";
+		"tvs-nvr_picata";
+	}
+	
+	subgraph tvs {
+	    color=aquamarine3
+	    node [style=filled,color=aquamarine3]
+		"http-async-client" [label="http-async-client\n#1 $1"]
+		"tvs-alarm-cep" [label="tvs-alarm-cep\n#1 $1"]
+		"tvs-alarm-event" [label="tvs-alarm-event\n#1 $1"]
+		"tvs-ams-plugins" [label="tvs-ams-plugins\n$1"]
+		"tvs-anpr-data-model-jaxb" [label="tvs-anpr-data-model-jaxb\n#1"]
+		"tvs-anpr-plugins" [label="tvs-anpr-plugins\n$1"]
+		"tvs-anpr-service"[label="tvs-anpr-service\n#2 $1"]
+		"tvs-authorization" [label="tvs-authorization\n$1"]
+		"tvs-auth-service" [label="tvs-auth-service\n#1"]
+		"tvs-camera-controller"[label="tvs-camera-controller\n$1"]
+		"tvs-camera-monitor" [label="tvs-camera-monitor\n#1 $1"]
+		"tvs-camera-service" [label="tvs-camera-service\n#1 $1"]
+		"tvs-configuration-service" [label="tvs-configuration-service\n#1 $1"]
+		"tvs-configuration-updater" [label="tvs-configuration-updater\n#1 $1"]
+		"tvs-conf-tools" [label="tvs-conf-tools\n#1 $1"]
+		"tvs-connector-core" [label="tvs-connector-core\n#1 #2"]
+		"tvs-context-persister" [label="tvs-context-persister\n$1"]
+		"tvs-data-model-jaxb" [label="tvs-data-model-jaxb\n#1"]
+		"tvs-display-service" [label="tvs-display-service\n#1 $1"]
+		"tvs-histo" [label="tvs-histo\n$1"]
+		"tvs-int-core" [label="tvs-int-core\n$1"]
+		"tvs-metadata-service" [label="tvs-metadata-servic\n$1"]
+		"tvs-mosaic-config" [label="tvs-mosaic-config\n$1"]
+		"tvs-multimedia-service" [label="tvs-multimedia-service\n#1 $1"]
+		"tvs-nvr-admin"
+		"tvs-obif-service" [label="tvs-obif-service\n$1"]
+		"tvs-picata-config" [label="vs-picata-config\n$1"]
+		"tvs-plugins" [label="tvs-plugins\n#1 $1"]
+		"tvs-properties"
+		"tvs-proxy-config" [label="tvs-proxy-config\n$1"]
+		"tvs-proxy-director" [label="vs-proxy-director\n#1 $1"]
+		"tvs-screenwall-controller" [label="tvs-screenwall-controller\n$1"]
+		"tvs-services-common" [label="tvs-services-common\n#1 #2 $1"]
+		"tvs-simulators" [label="tvs-simulators\n$1"]
+		"tvs-solr-requester" [label="tvs-solr-requester\n$1"]
+		"tvs-tagger"
+		"tvs-tva-data-model-jaxb" [label="tvs-tva-data-model-jaxb\n#1"]
+		"tvs-tva-service" [label="tvs-tva-service\n#1 #2 $1"]
+		"tvs-webapp" [label="tvs-webapp\n$1"]
+		"tvs-wsplayer-js" [label="tvs-wsplayer-js\n$1"]
+		"vms-gateway" [label="vms-gateway\n#1"]
+		"vs-web-components"
+	}
+
+	subgraph link_hv2tvs {
+	    edge [style=filled,color=darkgoldenrod3]
+		"hv-ams" -> "tvs-ams-plugins" ;
+		"hv-his" -> "tvs-histo";
+		"hv-hmi_mwt" -> "tvs-conf-tools";
+		"hv-hmi_mwt" -> "tvs-webapp" ;
+	}
+	
+	subgraph link_tvs2hv {	
+	    edge [style=filled,color=red]
+	    "tvs-auth-service" -> "hv-cms";
+		"tvs-services-common" -> "hv-cms";
+	}
+
+	subgraph link_tvs_core {	
+		"http-async-client" -> "tvs-camera-monitor" ;
+		"tvs-anpr-data-model-jaxb" -> "tvs-anpr-service" ;
+		"tvs-anpr-data-model-jaxb" -> "tvs-conf-tools";
+		"tvs-anpr-data-model-jaxb" -> "tvs-webapp" ;
+		"tvs-anpr-service" -> "tvs-anpr-plugins" ;
+		"tvs-auth-service" -> "tvs-alarm-event" ;
+		"tvs-auth-service" -> "tvs-camera-service";
+		"tvs-auth-service" -> "tvs-configuration-service";
+		"tvs-auth-service" -> "tvs-display-service";
+		"tvs-auth-service" -> "tvs-metadata-service"[weight=100];
+		"tvs-auth-service" -> "tvs-multimedia-service"; 
+		"tvs-auth-service" -> "vms-gateway";
+		"tvs-authorization" -> "tvs-conf-tools";
+		"tvs-authorization" -> "tvs-display-service" ;
+		"tvs-authorization" -> "tvs-multimedia-service" ; 
+		"tvs-authorization" -> "tvs-nvr-admin";
+		"tvs-authorization" -> "vms-gateway";
+		"tvs-build" -> "tvs-auth-service"[color=purple] ;
+		"tvs-build" -> "tvs-dependencies"[color=purple]
+		"tvs-build" -> "tvs-nvr-admin"[color=purple];
+		"tvs-camera-controller" -> "tvs-camera-monitor" ;
+		"tvs-camera-controller" -> "tvs-camera-service";
+		"tvs-camera-controller" -> "tvs-conf-tools";
+		"tvs-camera-controller" -> "tvs-webapp" ;  
+		"tvs-camera-monitor" -> "tvs-camera-service";
+		"tvs-camera-monitor" -> "tvs-conf-tools";
+		"tvs-camera-monitor" -> "tvs-webapp" ;
+		"tvs-connector-core" -> "tvs-anpr-service" ;
+		"tvs-context-persister" -> "tvs-webapp" ;
+		"tvs-data-model-jaxb" -> "tvs-ams-plugins" ;
+		"tvs-data-model-jaxb" -> "tvs-anpr-service" ;
+		"tvs-data-model-jaxb" -> "tvs-conf-tools";
+		"tvs-data-model-jaxb" -> "tvs-histo" ;
+		"tvs-data-model-jaxb" -> "tvs-plugins" ;
+		"tvs-data-model-jaxb" -> "tvs-services-common";
+		"tvs-data-model-jaxb" -> "tvs-tva-service";
+		"tvs-dependencies" -> "tvs-auth-service"[color=purple] ;
+		"tvs-dependencies" -> "tvs-security"[color=purple];
+		"tvs-int-core" -> "tvs-anpr-plugins" ;
+		"tvs-int-core" -> "tvs-anpr-service" ;
+		"tvs-int-core" -> "tvs-connector-core";
+		"tvs-mosaic-config" -> "tvs-conf-tools";
+		"tvs-nvr-admin" -> "tvs-nvr_picata"[color=gray48];
+		"tvs-picata-config" -> "tvs-conf-tools";
+		"tvs-plugins" -> "tvs-ams-plugins" ;
+		"tvs-plugins" -> "tvs-anpr-plugins" ;
+		"tvs-plugins" -> "tvs-camera-service";
+		"tvs-plugins" -> "tvs-display-service" ;
+		"tvs-plugins" -> "tvs-multimedia-service" ; 
+		"tvs-plugins" -> "tvs-tva-service" ;
+		"tvs-plugins" -> "tvs-webapp" ;
+		"tvs-proxy-config" -> "tvs-conf-tools";
+		"tvs-proxy-director" -> "tvs-conf-tools";
+		"tvs-screenwall-controller" -> "tvs-conf-tools";
+		"tvs-screenwall-controller" -> "tvs-display-service" ;
+		"tvs-screenwall-controller" -> "tvs-simulators" ;
+		"tvs-security" -> "tvs-auth-service"[color=purple] ;
+		"tvs-security" -> "tvs-camera-controller"[color=purple] ;
+		"tvs-security" -> "tvs-solr-requester"[color=purple];
+		"tvs-services-common" -> "tvs-alarm-event" ;
+		"tvs-services-common" -> "tvs-camera-service";
+		"tvs-services-common" -> "tvs-conf-tools";
+		"tvs-services-common" -> "tvs-configuration-service";
+		"tvs-services-common" -> "tvs-display-service" ;
+		"tvs-services-common" -> "tvs-multimedia-service" ; 
+		"tvs-services-common" -> "vms-gateway";
+		"tvs-solr-requester" -> "tvs-tagger" ; 
+		"tvs-tagger" -> "tvs-multimedia-service" ; 
+		"tvs-tagger" -> "tvs-webapp" ;
+		"tvs-tva-data-model-jaxb" -> "tvs-ams-plugins" ;
+		"tvs-tva-data-model-jaxb" -> "tvs-conf-tools";
+		"tvs-tva-data-model-jaxb" -> "tvs-plugins" ;
+		"tvs-tva-data-model-jaxb" -> "tvs-tva-service" ;
+		"tvs-tva-data-model-jaxb" -> "tvs-webapp" ;
+		"tvs-tva-service" -> "tvs-camera-monitor" ;
+		"tvs-webapp" -> "tvs-conf-tools";
+		"tvs-wsplayer-js" -> "tvs-conf-tools";
+		"tvs-wsplayer-js" -> "tvs-webapp" ;
+		"vs-web-components" -> "tvs-webapp" ;
+		"vs-web-components" [style=filled,color=pink,shape="box3d"];
+	}
+	
+#delivery tvs
+	subgraph delivery {
+		"tvs-alarm-cep"[shape=rarrow];
+		"tvs-alarm-event"[shape=rarrow];
+		"tvs-ams-plugins"[shape=rarrow];
+		"tvs-anpr-plugins"[shape=rarrow];
+		"tvs-anpr-service"[shape=rarrow];
+		"tvs-auth-service"[shape=rarrow];
+		"tvs-camera-service"[shape=rarrow];
+		"tvs-configuration-service"[shape=rarrow];
+		"tvs-configuration-updater"[shape=rarrow];
+		"tvs-conf-tools"[shape=rarrow];
+		"tvs-display-service"[shape=rarrow];
+		"tvs-histo"[shape=rarrow];
+		"tvs-metadata-service"[shape=rarrow];
+		"tvs-multimedia-service"[shape=rarrow];
+		"tvs-obif-service"[shape=rarrow];
+		"tvs-proxy-director"[shape=rarrow];
+		"tvs-simulators"[shape=rarrow];
+		"tvs-tva-service"[shape=rarrow];
+		"tvs-webapp"[shape=rarrow];
+		"vms-gateway"[shape=rarrow];
+		"vs-web-components"[shape=rarrow];
+		"hv-ams"[shape=rarrow];
+		"hv-cms"[shape=rarrow];
+		"hv-hmi_mwt"[shape=rarrow];
+		"tvs-mosaic"[shape=rarrow];
+		"tvs-proxy"[shape=rarrow];
+		"tvs-visio_tvp"[shape=rarrow];
+		"tvs-nvr_picata"[shape=rarrow];
+	}
+	
+
+
+#TVS
+	subgraph cluster_hypervisor {
+		color=darkgoldenrod3;
+		label="HyperVisor";
+		node [style=filled,color=darkgoldenrod3]
+		"hv-common";
+		"hv-connector";
+		"hv-his";
+		"hv-int-ws";
+		"hv-ams";
+		"hv-bps";
+		"hv-cms";
+		"hv-hmi_mwt";
+		"hv-tss";
+		"hv-tools-buildchain"[shape=box3d];
+		"hv-tools-buildtools"[shape=box3d];
+	}
+	
+	subgraph link_hv_core {	
+        edge [style=filled,color=darkgoldenrod3]
+        "hv-tools-buildchain" -> "hv-ams" ;
+        "hv-common" -> "hv-ams" ;
+        "hv-connector" -> "hv-ams" ;
+        "hv-tools-buildchain" -> "hv-bps" ;
+        "hv-ams" -> "hv-bps" ;
+        "hv-common" -> "hv-cms" ;
+        "hv-connector" -> "hv-cms" ;
+        "hv-tools-buildchain" -> "hv-cms";
+        "hv-int-ws" -> "hv-common"  ;
+        "hv-tools-buildchain" -> "hv-common"  ;
+        "hv-common" -> "hv-connector";
+        "hv-common" -> "hv-his" ;
+        "hv-connector" -> "hv-his" ;
+        "hv-tools-buildchain" -> "hv-his" ;
+        "hv-tools-buildchain" -> "hv-hmi_mwt" ;
+        "hv-tss" -> "hv-hmi_mwt" ;
+        "hv-connector" -> "hv-hmi_mwt" ;
+        "hv-common" -> "hv-hmi_mwt";
+        "hv-tools-buildchain" -> "hv-int-ws" ;
+        "hv-tools-buildtools" -> "hv-tools-buildchain";
+        "hv-tools-buildchain" -> "hv-tss" ;
+        "hv-connector" -> "hv-tss" ;
+        "hv-common" -> "hv-tss" ;
+	}
+	
+	subgraph link_hv2tvs {
+	    edge [style=filled,color=darkgoldenrod3]
+        "hv-common" -> "http-async-client";
+        "hv-common" -> "tvs-alarm-cep" ;
+        "hv-common" -> "tvs-alarm-event" ;
+        "hv-ams" -> "tvs-ams-plugins" ;
+        "hv-common" -> "tvs-anpr-data-model-jaxb";
+        "hv-connector" -> "tvs-anpr-service" ;
+        "hv-common" -> "tvs-auth-service" ;
+        "hv-common" -> "tvs-camera-monitor" ;
+        "hv-common" -> "tvs-camera-service";
+        "hv-common" -> "tvs-configuration-service";
+        "hv-common" -> "tvs-configuration-updater";
+        "hv-common" -> "tvs-conf-tools";
+        "hv-hmi_mwt" -> "tvs-conf-tools";
+        "hv-connector" -> "tvs-connector-core";
+        "hv-common" -> "tvs-connector-core";
+        "hv-common" -> "tvs-data-model-jaxb";
+        "hv-common" -> "tvs-display-service" ;
+        "hv-his" -> "tvs-histo";
+        "hv-common" -> "tvs-multimedia-service" ; 
+        "hv-common" -> "tvs-plugins";
+        "hv-common" -> "tvs-proxy-director" ;
+        "hv-common" -> "tvs-services-common" ;
+        "hv-connector" -> "tvs-services-common" ;
+        "hv-common" -> "tvs-tva-data-model-jaxb";
+        "hv-common" -> "tvs-tva-service" ;
+        "hv-connector" -> "tvs-tva-service" ;
+        "hv-hmi_mwt" -> "tvs-webapp" ;
+        "hv-common" -> "vms-gateway";
+
+	}
+	
+	subgraph link_tvs2hv {	
+	    edge [style=filled,color=red]
+	    "tvs-auth-service" -> "hv-cms";
+		"tvs-services-common" -> "hv-cms";
+	}
+
+
+#delivery tvs
+	subgraph delivery {
+		"tvs-alarm-cep"[shape=rarrow];
+		"tvs-alarm-event"[shape=rarrow];
+		"tvs-ams-plugins"[shape=rarrow];
+		"tvs-anpr-service"[shape=rarrow];
+		"tvs-auth-service"[shape=rarrow];
+		"tvs-camera-service"[shape=rarrow];
+		"tvs-configuration-service"[shape=rarrow];
+		"tvs-configuration-updater"[shape=rarrow];
+		"tvs-conf-tools"[shape=rarrow];
+		"tvs-display-service"[shape=rarrow];
+		"tvs-histo"[shape=rarrow];
+		"tvs-multimedia-service"[shape=rarrow];
+		"tvs-proxy-director"[shape=rarrow];
+		"tvs-tva-service"[shape=rarrow];
+		"tvs-webapp"[shape=rarrow];
+		"vms-gateway"[shape=rarrow];
+		"hv-ams"[shape=rarrow];
+		"hv-bps"[shape=rarrow];
+		"hv-cms"[shape=rarrow];
+		"hv-hmi_mwt"[shape=rarrow];
+		"hv-tss"[shape=rarrow];
+	}
+
+
+	subgraph vs_wbc {
+		color=pink
+		label="vs-web-components";
+		node [style=filled,color=pink]
+		"tvs-ng-library";
+		"tvs-ui-theme";
+		"vs-shared-services";
+		"vs-wbc-automation-editor";
+		"vs-wbc-automation-list";
+		"vs-wbc-clip-list";
+		"vs-wbc-export-list";
+		"vs-wbc-favorites-camera";
+		"vs-wbc-info-panel";
+		"vs-wbc-metadata-replay";
+		"vs-wbc-metadata-search";
+		"vs-wbc-mosaic-admin";
+		"vs-wbc-mosaic-list";
+		"vs-wbc-navigation-tree";
+		"vs-wbc-preset-editor";
+		"vs-wbc-screenwall";
+		"vs-wbc-tag-list";
+		"vs-wbc-timeline";
+		"vs-wbc-video-layout";
+		"vs-wbc-video-monitor";
+		"vs-wbc-video-player";
+		"tvs-ui";
+	}
+	
+	subgraph cluster_vms {
+		color=red
+		label="obsolete ?";
+		node [style=filled,color=red]
+		"vms-histo-converter";
+	}  
+
+
+	subgraph link_vs_web_components {
+		"tvs-ng-library" -> "tvs-ui";
+		"tvs-ui-theme" -> "tvs-ui";
+		"vs-shared-services" -> "tvs-ui";
+
+		"vs-wbc-automation-editor" -> "tvs-ui";
+		"vs-wbc-automation-list" -> "tvs-ui";
+		"vs-wbc-clip-list" -> "tvs-ui";
+		"vs-wbc-metadata-replay" -> "tvs-ui";
+		"vs-wbc-metadata-search" -> "tvs-ui";
+		"vs-wbc-mosaic-admin" -> "tvs-ui";
+		"vs-wbc-mosaic-list" -> "tvs-ui";
+		"vs-wbc-navigation-tree" -> "tvs-ui";
+		"vs-wbc-preset-editor" -> "tvs-ui";
+		"vs-wbc-screenwall" -> "tvs-ui";
+		"vs-wbc-tag-list" -> "tvs-ui";
+		"vs-wbc-export-list" -> "tvs-ui";
+		"vs-wbc-timeline" -> "tvs-ui";
+		"vs-wbc-video-player" -> "tvs-ui";
+		"vs-wbc-video-layout" -> "tvs-ui";
+		"vs-wbc-info-panel" -> "tvs-ui";
+		"vs-wbc-favorites-camera" -> "tvs-ui";
+		"vs-wbc-video-monitor" -> "tvs-ui";
+		
+		"tvs-ng-library" -> "vs-wbc-automation-editor";
+		"tvs-ng-library" -> "vs-wbc-automation-list";
+		"tvs-ng-library" -> "vs-wbc-clip-list";
+		"tvs-ng-library" -> "vs-wbc-metadata-replay";
+		"tvs-ng-library" -> "vs-wbc-metadata-search";
+		"tvs-ng-library" -> "vs-wbc-mosaic-admin";
+		"tvs-ng-library" -> "vs-wbc-mosaic-list";
+		"tvs-ng-library" -> "vs-wbc-navigation-tree";
+		"tvs-ng-library" -> "vs-wbc-preset-editor";
+		"tvs-ng-library" -> "vs-wbc-screenwall";
+		"tvs-ng-library" -> "vs-wbc-tag-list";
+		"tvs-ng-library" -> "vs-wbc-export-list";
+		"tvs-ng-library" -> "vs-wbc-timeline";
+		"tvs-ng-library" -> "vs-wbc-video-player";
+		"tvs-ng-library" -> "vs-wbc-video-layout";
+		"tvs-ng-library" -> "vs-wbc-info-panel";
+		"tvs-ng-library" -> "vs-wbc-favorites-camera";
+		"tvs-ng-library" -> "vs-wbc-video-monitor";
+		
+		"tvs-ui-theme" -> "vs-wbc-automation-editor";
+		"tvs-ui-theme" -> "vs-wbc-automation-list";
+		"tvs-ui-theme" -> "vs-wbc-clip-list";
+		"tvs-ui-theme" -> "vs-wbc-metadata-replay";
+		"tvs-ui-theme" -> "vs-wbc-metadata-search";
+		"tvs-ui-theme" -> "vs-wbc-mosaic-admin";
+		"tvs-ui-theme" -> "vs-wbc-mosaic-list";
+		"tvs-ui-theme" -> "vs-wbc-navigation-tree";
+		"tvs-ui-theme" -> "vs-wbc-preset-editor";
+		"tvs-ui-theme" -> "vs-wbc-screenwall";
+		"tvs-ui-theme" -> "vs-wbc-tag-list";
+		"tvs-ui-theme" -> "vs-wbc-export-list";
+		"tvs-ui-theme" -> "vs-wbc-timeline";
+		"tvs-ui-theme" -> "vs-wbc-video-player";
+		"tvs-ui-theme" -> "vs-wbc-video-layout";
+		"tvs-ui-theme" -> "vs-wbc-info-panel";
+		"tvs-ui-theme" -> "vs-wbc-favorites-camera";
+	    "tvs-ui-theme" -> "vs-wbc-video-monitor";
+	
+		"vs-shared-services" -> "vs-wbc-automation-editor";
+		"vs-shared-services" -> "vs-wbc-automation-list";
+		"vs-shared-services" -> "vs-wbc-clip-list";
+		"vs-shared-services" -> "vs-wbc-metadata-replay";
+		"vs-shared-services" -> "vs-wbc-metadata-search";
+		"vs-shared-services" -> "vs-wbc-mosaic-admin";
+		"vs-shared-services" -> "vs-wbc-mosaic-list";
+		"vs-shared-services" -> "vs-wbc-navigation-tree";
+		"vs-shared-services" -> "vs-wbc-preset-editor";
+		"vs-shared-services" -> "vs-wbc-screenwall";
+		"vs-shared-services" -> "vs-wbc-tag-list";
+		"vs-shared-services" -> "vs-wbc-export-list";
+		"vs-shared-services" -> "vs-wbc-timeline";
+		"vs-shared-services" -> "vs-wbc-video-player";
+		"vs-shared-services" -> "vs-wbc-video-layout";
+		"vs-shared-services" -> "vs-wbc-info-panel";
+		"vs-shared-services" -> "vs-wbc-favorites-camera";
+		"vs-shared-services" -> "vs-wbc-video-monitor";
+		
+		"tvs-properties"->"vms-histo-converter"->"tvs-edge-proxy"
+	}
+
+
+	
+	subgraph vs_wbc {
+		color=pink
+		label="vs-web-components";
+		node [style=filled,color=pink]
+		"tvs-ng-library";
+		"tvs-ui-theme";
+		"vs-shared-services";
+		"vs-wbc-automation-editor";
+		"vs-wbc-automation-list";
+		"vs-wbc-clip-list";
+		"vs-wbc-export-list";
+		"vs-wbc-favorites-camera";
+		"vs-wbc-info-panel";
+		"vs-wbc-metadata-replay";
+		"vs-wbc-metadata-search";
+		"vs-wbc-mosaic-admin";
+		"vs-wbc-mosaic-list";
+		"vs-wbc-navigation-tree";
+		"vs-wbc-preset-editor";
+		"vs-wbc-screenwall";
+		"vs-wbc-tag-list";
+		"vs-wbc-timeline";
+		"vs-wbc-video-layout";
+		"vs-wbc-video-monitor";
+		"vs-wbc-video-player";
+		"tvs-ui";
+	}
+	
+	subgraph cluster_vms {
+		color=red
+		label="obsolete ?";
+		node [style=filled,color=red]
+		"vms-histo-converter";
+	}  
+
+
+	subgraph link_vs_web_components {
+		"tvs-ng-library" -> "tvs-ui";
+		"tvs-ui-theme" -> "tvs-ui";
+		"vs-shared-services" -> "tvs-ui";
+
+		"vs-wbc-automation-editor" -> "tvs-ui";
+		"vs-wbc-automation-list" -> "tvs-ui";
+		"vs-wbc-clip-list" -> "tvs-ui";
+		"vs-wbc-metadata-replay" -> "tvs-ui";
+		"vs-wbc-metadata-search" -> "tvs-ui";
+		"vs-wbc-mosaic-admin" -> "tvs-ui";
+		"vs-wbc-mosaic-list" -> "tvs-ui";
+		"vs-wbc-navigation-tree" -> "tvs-ui";
+		"vs-wbc-preset-editor" -> "tvs-ui";
+		"vs-wbc-screenwall" -> "tvs-ui";
+		"vs-wbc-tag-list" -> "tvs-ui";
+		"vs-wbc-export-list" -> "tvs-ui";
+		"vs-wbc-timeline" -> "tvs-ui";
+		"vs-wbc-video-player" -> "tvs-ui";
+		"vs-wbc-video-layout" -> "tvs-ui";
+		"vs-wbc-info-panel" -> "tvs-ui";
+		"vs-wbc-favorites-camera" -> "tvs-ui";
+		"vs-wbc-video-monitor" -> "tvs-ui";
+		
+		"tvs-ng-library" -> "vs-wbc-automation-editor";
+		"tvs-ng-library" -> "vs-wbc-automation-list";
+		"tvs-ng-library" -> "vs-wbc-clip-list";
+		"tvs-ng-library" -> "vs-wbc-metadata-replay";
+		"tvs-ng-library" -> "vs-wbc-metadata-search";
+		"tvs-ng-library" -> "vs-wbc-mosaic-admin";
+		"tvs-ng-library" -> "vs-wbc-mosaic-list";
+		"tvs-ng-library" -> "vs-wbc-navigation-tree";
+		"tvs-ng-library" -> "vs-wbc-preset-editor";
+		"tvs-ng-library" -> "vs-wbc-screenwall";
+		"tvs-ng-library" -> "vs-wbc-tag-list";
+		"tvs-ng-library" -> "vs-wbc-export-list";
+		"tvs-ng-library" -> "vs-wbc-timeline";
+		"tvs-ng-library" -> "vs-wbc-video-player";
+		"tvs-ng-library" -> "vs-wbc-video-layout";
+		"tvs-ng-library" -> "vs-wbc-info-panel";
+		"tvs-ng-library" -> "vs-wbc-favorites-camera";
+		"tvs-ng-library" -> "vs-wbc-video-monitor";
+		
+		"tvs-ui-theme" -> "vs-wbc-automation-editor";
+		"tvs-ui-theme" -> "vs-wbc-automation-list";
+		"tvs-ui-theme" -> "vs-wbc-clip-list";
+		"tvs-ui-theme" -> "vs-wbc-metadata-replay";
+		"tvs-ui-theme" -> "vs-wbc-metadata-search";
+		"tvs-ui-theme" -> "vs-wbc-mosaic-admin";
+		"tvs-ui-theme" -> "vs-wbc-mosaic-list";
+		"tvs-ui-theme" -> "vs-wbc-navigation-tree";
+		"tvs-ui-theme" -> "vs-wbc-preset-editor";
+		"tvs-ui-theme" -> "vs-wbc-screenwall";
+		"tvs-ui-theme" -> "vs-wbc-tag-list";
+		"tvs-ui-theme" -> "vs-wbc-export-list";
+		"tvs-ui-theme" -> "vs-wbc-timeline";
+		"tvs-ui-theme" -> "vs-wbc-video-player";
+		"tvs-ui-theme" -> "vs-wbc-video-layout";
+		"tvs-ui-theme" -> "vs-wbc-info-panel";
+		"tvs-ui-theme" -> "vs-wbc-favorites-camera";
+	    "tvs-ui-theme" -> "vs-wbc-video-monitor";
+	
+		"vs-shared-services" -> "vs-wbc-automation-editor";
+		"vs-shared-services" -> "vs-wbc-automation-list";
+		"vs-shared-services" -> "vs-wbc-clip-list";
+		"vs-shared-services" -> "vs-wbc-metadata-replay";
+		"vs-shared-services" -> "vs-wbc-metadata-search";
+		"vs-shared-services" -> "vs-wbc-mosaic-admin";
+		"vs-shared-services" -> "vs-wbc-mosaic-list";
+		"vs-shared-services" -> "vs-wbc-navigation-tree";
+		"vs-shared-services" -> "vs-wbc-preset-editor";
+		"vs-shared-services" -> "vs-wbc-screenwall";
+		"vs-shared-services" -> "vs-wbc-tag-list";
+		"vs-shared-services" -> "vs-wbc-export-list";
+		"vs-shared-services" -> "vs-wbc-timeline";
+		"vs-shared-services" -> "vs-wbc-video-player";
+		"vs-shared-services" -> "vs-wbc-video-layout";
+		"vs-shared-services" -> "vs-wbc-info-panel";
+		"vs-shared-services" -> "vs-wbc-favorites-camera";
+		"vs-shared-services" -> "vs-wbc-video-monitor";
+		
+		"tvs-properties"->"vms-histo-converter"->"tvs-edge-proxy"
+	}
+	
+
+	subgraph CCTV_3G {
+		color=green
+		label="CCTV 3G";
+		node [style=filled,color=green]
+		
+		"cctv-business-config-data-du"
+		"cctv-solution-business-config-data-du"
+		"cctv-synoptic"
+		"tvs-edge-proxy"
+		"vms-automation-scheduler"
+		"vms-edge-proxy-ui"
+		"vms-showcase-ui"
+		"vms-vca-event"
+		"wbc-cap-explorer"
+		"wbc-job-editor"
+		"wbc-job-list"
+		"wbc-vca-alarms"
+		"wbc-vca-event-validation"
+	}
+	
+	subgraph cf_services {
+		color=gold
+		label="cf services";
+		node [style=filled,color=gold]
+		"gdp-rabbitmq"
+	}
+
+	subgraph cf_databases {
+		color=darkgoldenrod2
+		label="cf services";
+		fixedsize=shape;
+		node [style=filled,shape=cylinder,color=darkgoldenrod2]
+		"alarmmgr-sp-db"
+		"automation-scheduler-sp-db"
+		"tempmgr-sp-db"
+	}
+
+	subgraph link_cctv_3g_components {	
+		{"gdp-master-pom"}->"cctv-business-config-data-du"
+
+		{"gdp-master-pom"}->"cctv-solution-business-config-data-du"
+
+		{"gdp-master-pom",
+		"gdp-rabbitmq",
+		"vms-histo-converter",
+		"tempmgr-sp-db"}->"tvs-edge-proxy"
+		
+		{"gdp-master-pom",
+		"gdp-rabbitmq",
+		"automation-scheduler-sp-db"}->"vms-automation-scheduler"
+			
+		{"gdp-master-pom",
+		"alarmmgr-sp-db",
+		"gdp-rabbitmq",
+		"vs-wbc-automation-editor",
+		"vs-wbc-automation-list",
+		"vs-wbc-clip-list",
+		"vs-wbc-export-list",
+		"vs-wbc-preset-editor",
+		"vs-wbc-screenwall",
+		"vs-wbc-tag-list",
+		"vs-wbc-timeline",
+		"vs-wbc-video-player",
+		"vs-wbc-info-panel",
+		"vs-wbc-navigation-tree",
+		"vs-wbc-video-layout",
+		"vs-shared-services",
+		"wbc-cap-explorer",
+		"wbc-vca-event-validation",
+		"wbc-vca-alarms",
+		"wbc-job-editor",
+		"wbc-job-list"}->"vms-edge-proxy-ui"
+		
+		{"gdp-master-pom",
+		"gdp-commons-security-client-server",
+		"vs-shared-services"}->"vms-showcase-ui"
+		
+		{"gdp-master-pom","gdp-rabbitmq"}->"vms-vca-event"
+    	{"vs-wbc-video-player","vs-shared-services"}->"wbc-vca-alarms"
+    	{"vs-wbc-video-player","vs-shared-services"}->"wbc-vca-event-validation"
+    }
+
+#delivery cctv
+	subgraph delivery_cctv {
+		"tvs-edge-proxy"[shape=rarrow];
+		"vms-edge-proxy-ui"[shape=rarrow];
+		"vms-automation-scheduler"[shape=rarrow];
+		"vms-showcase-ui"[shape=rarrow];
+		"vms-vca-event"[shape=rarrow];
+		"cctv-solution-business-config-data-du"[shape=rarrow];
+	}  
+
+#delivery cctv
+	subgraph tvs_dependency {
+	 		"tvs-properties" -> "http-async-client" ;
+	 		"tvs-properties" -> "tvs-alarm-cep" ;
+	 		"tvs-properties" -> "tvs-alarm-event" ;
+	 		"tvs-properties" -> "tvs-ams-plugins" ;
+	 		"tvs-properties" -> "tvs-anpr-plugins" ;
+			"tvs-properties" -> "tvs-anpr-service" ;
+	 		"tvs-properties" -> "tvs-authorization" ;
+	 		"tvs-properties" -> "tvs-camera-controller" ;
+	 		"tvs-properties" -> "tvs-camera-monitor" ;
+	 		"tvs-properties" -> "tvs-camera-service";
+	 		"tvs-properties" -> "tvs-configuration-service";
+	 		"tvs-properties" -> "tvs-configuration-updater" ;
+	 		"tvs-properties" -> "tvs-conf-tools";
+	 		"tvs-properties" -> "tvs-context-persister" ; 
+	 		"tvs-properties" -> "tvs-display-service" ;
+	 		"tvs-properties" -> "tvs-histo" ;
+	 		"tvs-properties" -> "tvs-int-core" ;  
+			"tvs-properties" -> "tvs-metadata-service" ;
+	 		"tvs-properties" -> "tvs-mosaic-config";
+	 		"tvs-properties" -> "tvs-multimedia-service" ; 
+			"tvs-properties" -> "tvs-obif-service" ;
+	 		"tvs-properties" -> "tvs-picata-config";
+	  		"tvs-properties" -> "tvs-plugins";
+	 		"tvs-properties" -> "tvs-proxy-config";
+	 		"tvs-properties" -> "tvs-proxy-director" ;
+	 		"tvs-properties" -> "tvs-screenwall-controller" ;
+	 		"tvs-properties" -> "tvs-services-common" ;
+	 		"tvs-properties" -> "tvs-simulators" ;
+	 		"tvs-properties" -> "tvs-solr-requester" ;
+	  		"tvs-properties" -> "tvs-tva-service" ;
+	 		"tvs-properties" -> "tvs-webapp" ;
+	  		"tvs-properties" -> "tvs-wsplayer-js" ;
+	}
+
+}

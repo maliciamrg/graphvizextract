@@ -1,0 +1,7 @@
+
+digraph gvpr_result {
+	"tvs-anpr-plugins"	[color=aquamarine3,
+		label="tvs-anpr-plugins\n$1",
+		shape=rarrow,
+		style=filled];
+}

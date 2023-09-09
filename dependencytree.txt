@@ -1,0 +1,3 @@
+https://forum.graphviz.org/t/print-only-specified-node-and-its-dependencies-from-large-graph/1011
+https://www.google.com/search?q=dependency+tree+from+pom+and+submodule+pom&source=lmns&bih=1041&biw=1920&hl=en&sa=X&ved=2ahUKEwjRu8vuoJb-AhVimicCHZVSAuQQ_AUoAHoECAEQAA
+https://borealisdata.ca/guides/en/latest/developers/dependencies.html

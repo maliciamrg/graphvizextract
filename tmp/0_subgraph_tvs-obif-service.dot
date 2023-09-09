@@ -1,0 +1,18 @@
+// subgraph node: tvs-obif-service
+digraph gvpr_result {
+	graph [bgcolor=transparent,
+		concentrate=true,
+		fontname=Handlee,
+		forcelabels=true,
+		overlap=false,
+		rankdir=LR
+	];
+	node [fontname=Handlee,
+		shape=component
+	];
+	edge [fontname=Handlee];
+	"tvs-obif-service"	[color=aquamarine3,
+		label="tvs-obif-service\n$1",
+		shape=rarrow,
+		style=filled];
+}
